@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace BlackJackGame
 {
-  public class Program
+  class Program
   {
     static void Main(string[] args)
     {
-      
+      Console.WriteLine("Welcome to BlackJack Game!");
+
+      Card card = new Card ("Hearts", "Ace");
+
+      Console.WriteLine(card);
+
     }
   }
 }
