@@ -88,5 +88,27 @@ namespace BlackJackGame
         return cards[currentCard++];
     }
 }
+public class Player
+{
+    public string Name { get; }
+    public int Score { get; private set; }
+    public bool IsBust => Score > 21;
+
+    public Player(string name)
+    {
+        Name = name;
+        Score = 0;
+    }
+
+    public void ReceiveCard(Card card)
+    {
+        Score += card.Value;
+    }
+
+    public void Reset()
+    {
+        Score = 0;
+    }
+  }
 
 }
