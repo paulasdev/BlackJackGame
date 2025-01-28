@@ -10,7 +10,10 @@ namespace BlackJackGame
   {
     static void Main(string[] args)
     {
-      Console.WriteLine("Welcome to BlackJack Game!");
+   Console.WriteLine("Welcome to BlackJack Game!");
+  Game game = new Game();
+  game.Play();
+       
     }
   }
 }

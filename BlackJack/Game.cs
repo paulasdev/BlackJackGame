@@ -8,7 +8,7 @@ namespace BlackJackGame
 {
 
   //Card class to represent individual cards
-  public class Card
+public class Card
   {
    //proprerties
     public string Suit { get; set; }
@@ -29,7 +29,7 @@ namespace BlackJackGame
         return string.Format($"{Rank} of {Suit}, value {Value}");
     }
   }
-    //Deck class to manage a deck of cards
+  //Deck class to manage a deck of cards
  public class Deck
 {
     private Card[] cards;
@@ -88,6 +88,7 @@ namespace BlackJackGame
         return cards[currentCard++];
     }
 }
+//Player class to manage player state and scoring.
 public class Player
 {
     public string Name { get; }
@@ -110,5 +111,116 @@ public class Player
         Score = 0;
     }
   }
+//Game class to manage the game logic
+public class Game
+    {
+        public void Play()
+        {
+            string playAgain = "y";
 
+            while (playAgain == "y")
+            {
+                // Initialize deck, player, and dealer
+                Deck deck = new Deck();
+                deck.Shuffle();
+
+                Player player = new Player("Player");
+                Player dealer = new Player("Dealer");
+
+                // Reset scores
+                player.Reset();
+                dealer.Reset();
+
+                // Player's initial cards
+                Console.WriteLine("\nDealing cards to Player...");
+                Card card1 = deck.Deal();
+                Card card2 = deck.Deal();
+                Console.WriteLine($"Card dealt is the {card1}");
+                Console.WriteLine($"Card dealt is the {card2}");
+
+                player.ReceiveCard(card1);
+                player.ReceiveCard(card2);
+
+                Console.WriteLine($"Your score is {player.Score}");
+
+                // Player's turn
+                while (true)
+                {
+                    Console.Write("\nDo you want to stick or twist? (s/t): ");
+                    string choice = Console.ReadLine()?.ToLower();
+
+                    if (choice == "s")
+                    {
+                        Console.WriteLine("\nDealer plays\n");
+                        break;
+                    }
+                    else if (choice == "t")
+                    {
+                        Card newCard = deck.Deal();
+                        if (newCard == null)
+                        {
+                            Console.WriteLine("No more cards in the deck.");
+                            break;
+                        }
+
+                        Console.WriteLine($"Card dealt is the {newCard}");
+                        player.ReceiveCard(newCard);
+                        Console.WriteLine($"Your score is {player.Score}");
+
+                        if (player.IsBust)
+                        {
+                            Console.WriteLine("You are bust! Dealer wins.");
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice. Please enter 's' to stick or 't' to twist.");
+                    }
+                }
+
+                // Dealer's turn
+                if (!player.IsBust)
+                {
+                    while (dealer.Score < 17)
+                    {
+                        Card newCard = deck.Deal();
+                        if (newCard == null)
+                        {
+                            Console.WriteLine("No more cards in the deck.");
+                            break;
+                        }
+
+                        Console.WriteLine($"Card dealt is the {newCard}");
+                        dealer.ReceiveCard(newCard);
+                    }
+
+                    Console.WriteLine($"Dealer score is {dealer.Score}");
+
+                    // Determine winner
+                    if (dealer.IsBust || player.Score > dealer.Score)
+                    {
+                        Console.WriteLine("Player wins");
+                    }
+                    else if (player.Score == dealer.Score)
+                    {
+                        Console.WriteLine("It's a tie!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Dealer wins");
+                    }
+                }
+
+                // Replay option
+                Console.Write("\nDo you want to play again? (y/n): ");
+                playAgain = Console.ReadLine()?.ToLower();
+            }
+        }
+    }
 }
+
+    
+    
+
+    
